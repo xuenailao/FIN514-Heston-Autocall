@@ -1,0 +1,141 @@
+================================================================================
+                      FIN514 PROJECT 2 - COMPLETED
+                 Heston Model Calibration and Valuation
+================================================================================
+
+PROJECT DELIVERABLES:
+--------------------
+
+1. IMPLEMENTATION FILES
+   ✓ heston_calibration.py          - Step 1: Initial parameter calibration
+   ✓ process_datasets.py            - Dataset 2 & 3 processing
+   ✓ full_heston_calibration.py     - Complete calibration implementation
+   ✓ final_valuation.py             - MAIN SCRIPT (Monte Carlo + Binomial)
+   ✓ visualize_results.py           - Generate visualizations
+   ✓ show_results.py                - Display results summary
+
+2. DATA FILES
+   ✓ Dataset1.txt                   - ATM vols (53 maturities)
+   ✓ dataset2/                      - Full option chains (2 dates)
+   ✓ dataset3/                      - Quarterly maturities (7 files)
+
+3. RESULTS
+   ✓ heston_calibration_step1.npz   - Initial calibration
+   ✓ final_results.npz              - Complete valuation results
+   ✓ heston_results.png             - Results dashboard (4 plots)
+   ✓ heston_sample_paths.png        - Sample Heston paths
+
+4. DOCUMENTATION
+   ✓ README.md                      - Complete user guide
+   ✓ PROJECT_SUMMARY.md             - Detailed technical report
+   ✓ run_all.sh                     - One-click execution script
+
+================================================================================
+
+KEY RESULTS:
+-----------
+
+HESTON MODEL PARAMETERS:
+  v₀ (initial variance)     = 0.021404  (14.63% vol)
+  κ  (mean reversion)       = 10.0000
+  θ  (long-term variance)   = 0.040078  (20.02% vol)
+  σ  (vol-of-vol)           = 0.5000
+  ρ  (correlation)          = -0.7000
+
+CALIBRATION QUALITY:
+  ✓ Feller condition satisfied (2κθ = 0.8016 > σ² = 0.25)
+  ✓ 53 maturities fitted (0.0055 to 4.08 years)
+  ✓ RMSE = 1.28%
+
+PRODUCT VALUATION:
+  Monte Carlo (Heston):     $968.80  (±$0.38 SE, 100k paths)
+  Binomial Tree:            $987.09  (2000 steps)
+  Prospectus Estimate:      $965.20
+
+  ✓ Monte Carlo within 0.4% of prospectus estimate
+  ✓ Stochastic volatility reduces value vs. constant vol
+
+================================================================================
+
+HOW TO RUN:
+----------
+
+Option 1 - Run everything:
+  $ ./run_all.sh
+
+Option 2 - Run main script only:
+  $ python3 final_valuation.py
+
+Option 3 - View results:
+  $ python3 show_results.py
+
+================================================================================
+
+PRODUCT DETAILS:
+---------------
+
+Autocallable Contingent Coupon Note on S&P 500 Index
+  • Face Value:          $1,000
+  • Coupon:              7.3% annual (1.825% quarterly)
+  • Maturity:            3.8959 years (1,422 days)
+  • Pricing Date:        22 November 2025
+  • Spot:                $6,610.00
+  • Autocall Barrier:    $6,610.00 (100% of spot)
+  • Contingent Barrier:  $4,627.00 (70% of spot)
+
+SEC Filing: https://www.sec.gov/Archives/edgar/data/1682472/000191870425014438/form424b2.htm
+
+================================================================================
+
+METHODOLOGY:
+-----------
+
+1. CALIBRATION (Dataset 1):
+   - Fit v₀, κ, θ to ATM implied volatility term structure
+   - Set σ, ρ based on market practice for SPX
+   - Validate Feller condition for well-posed dynamics
+
+2. MONTE CARLO VALUATION:
+   - Simulate 100,000 Heston paths (Euler scheme)
+   - Full truncation for non-negative variance
+   - Correlated Brownian motions (ρ = -0.7)
+   - Price autocall and contingent coupon features
+
+3. BINOMIAL TREE VALIDATION:
+   - 2,000-step CRR tree
+   - Constant volatility = 20.02% (Heston long-term)
+   - Backward induction with autocall checks
+
+================================================================================
+
+KEY INSIGHTS:
+------------
+
+1. Stochastic volatility is essential for autocallable products
+   - Reduces value compared to constant volatility
+   - Captures volatility smile/skew effects
+
+2. Negative correlation (ρ = -0.7) is critical
+   - Volatility rises when market falls
+   - Increases downside risk below barriers
+
+3. Model validation is strong
+   - Monte Carlo: $968.80 vs Prospectus: $965.20
+   - Less than 0.4% difference
+
+4. Heston model successfully captures market dynamics
+   - Term structure of volatility
+   - Realistic path behavior
+   - Good calibration fit (RMSE 1.28%)
+
+================================================================================
+
+RECOMMENDED VALUATION: $968.80
+(Monte Carlo simulation with calibrated Heston model)
+
+================================================================================
+
+Project completed: November 22, 2025
+FIN514 Fall 2025 - University of Illinois Urbana-Champaign
+
+================================================================================
