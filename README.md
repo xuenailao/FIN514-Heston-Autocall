@@ -39,6 +39,7 @@ FIN514/
 ├── full_heston_calibration.py     # Full calibration (all parameters)
 ├── heston_complete.py             # Complete implementation
 ├── final_valuation.py             # MAIN SCRIPT - Run this!
+├── binomial_accurate.py           # Accurate binomial (matches ipynb)
 ├── PROJECT_SUMMARY.md             # Detailed project report
 └── README.md                      # This file
 ```
@@ -80,6 +81,19 @@ python3 final_valuation.py
 - Sensitivity analysis
 - Saves `final_results.npz`
 
+### Step 4: Accurate Binomial Implementation (matches ipynb)
+
+```bash
+python3 binomial_accurate.py
+```
+
+**Output:**
+- Exact implementation matching Proj_2_Bin.ipynb
+- Separate coupon-only and autocall dates
+- Convergence testing (6 step sizes)
+- Volatility sensitivity analysis
+- Saves `binomial_accurate_results.npz`
+
 ---
 
 ## Results
@@ -96,13 +110,16 @@ python3 final_valuation.py
 
 ### Product Valuation
 
-| Method | Value |
-|--------|-------|
-| **Monte Carlo (Heston)** | **$968.80** |
-| **Binomial Tree** | **$987.09** |
-| **Prospectus Estimate** | **$965.20** |
+| Method | Value | vs. Prospectus |
+|--------|-------|----------------|
+| **Monte Carlo (Heston)** | **$968.80** | **+0.37%** ⭐ |
+| **Binomial Tree (Simplified)** | **$987.09** | +2.27% |
+| **Binomial Tree (Accurate/ipynb)** | **$993.00** | +2.88% |
+| **Prospectus Estimate** | **$965.20** | — |
 
-The Monte Carlo valuation with the calibrated Heston model ($968.80) is within 0.4% of the prospectus estimate.
+The Monte Carlo valuation with the calibrated Heston model ($968.80) is within 0.4% of the prospectus estimate, making it the most accurate method.
+
+**Note:** The binomial tree implementations use constant volatility and therefore overvalue the product compared to the stochastic volatility Monte Carlo approach.
 
 ---
 
